@@ -73,8 +73,8 @@ lazy_static::lazy_static! {
         settings.set_default::<Option<String>>("smt_solver_path", env::var("Z3_EXE").ok()).unwrap();
         settings.set_default::<Option<String>>("smt_solver_wrapper_path", None).unwrap();
         settings.set_default::<Option<String>>("boogie_path", env::var("BOOGIE_EXE").ok()).unwrap();
-        settings.set_default::<Option<String>>("viper_home", None).unwrap();
-        settings.set_default::<Option<String>>("java_home", None).unwrap();
+        settings.set_default::<Option<String>>("viper_home", env::var("VIPER_HOME").ok()).unwrap();
+        settings.set_default::<Option<String>>("java_home", env::var("JAVA_HOME").ok()).unwrap();
 
         settings.set_default::<Option<u32>>("check_timeout", None).unwrap();
         settings.set_default("check_foldunfold_state", false).unwrap();

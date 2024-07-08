@@ -26,6 +26,7 @@ ViperToolsNightly*.zip
 tmp/
 gen/
 target/
+result
 
 log/
 nll-facts/

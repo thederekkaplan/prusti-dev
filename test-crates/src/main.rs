@@ -186,8 +186,14 @@ fn main() -> Result<(), Box<dyn Error>> {
     } else {
         Path::new("target/release")
     };
-    let host_viper_home = Path::new("viper_tools/backends");
-    let host_z3_home = Path::new("viper_tools/z3/bin");
+    let host_viper_home = env::var("VIPER_HOME")
+        .ok()
+        .map(|s| PathBuf::from(s).join("backends"))
+        .unwrap_or("viper_tools/backends".into());
+    let host_z3_home = env::var("Z3_EXE")
+        .ok()
+        .and_then(|s| PathBuf::from(s).parent().map(Path::to_path_buf))
+        .unwrap_or("viper_tools/z3/bin".into());
     let host_java_home = env::var("JAVA_HOME")
         .ok()
         .map(|s| s.into())
@@ -321,8 +327,8 @@ fn main() -> Result<(), Box<dyn Error>> {
                     guest_prusti_home,
                     cmd::MountKind::ReadOnly,
                 )
-                .mount(host_viper_home, guest_viper_home, cmd::MountKind::ReadOnly)
-                .mount(host_z3_home, guest_z3_home, cmd::MountKind::ReadOnly)
+                .mount(&host_viper_home, guest_viper_home, cmd::MountKind::ReadOnly)
+                .mount(&host_z3_home, guest_z3_home, cmd::MountKind::ReadOnly)
                 .mount(&host_java_home, &guest_java_home, cmd::MountKind::ReadOnly);
             for java_policy_path in &host_java_policies {
                 sandbox =
