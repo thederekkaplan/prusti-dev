@@ -3,17 +3,10 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-
     flake-parts.url = "github:hercules-ci/flake-parts";
-
     crane.url = "github:ipetkov/crane";
-    crane.inputs.nixpkgs.follows = "nixpkgs";
-
     rust-overlay.url = "github:oxalica/rust-overlay";
-    rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
-
     viper.url = "git+https://github.com/thederekkaplan/viperserver.git?submodules=1";
-    viper.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs@{ self, nixpkgs, flake-parts, crane, rust-overlay, viper }: 
@@ -108,6 +101,7 @@
         };
 
         packages.default = craneLib.buildPackage (base // {doCheck = false;});
+        packages.rust = rust;
         checks.default = craneLib.buildPackage (base // {doCheck = true; pnameSuffix = "-test";});
       };
     };
